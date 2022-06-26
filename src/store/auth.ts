@@ -30,6 +30,12 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(
+        authApiSlice.endpoints.getProfile.matchFulfilled,
+        (state, { payload: { body } }) => {
+          state.user = body;
+        }
+      )
+      .addMatcher(
         authApiSlice.endpoints.login.matchFulfilled,
         (state, { payload: { body } }) => {
           state.token = body.token;
@@ -49,5 +55,5 @@ export const authSlice = createSlice({
 export const { setCredentials } = authSlice.actions;
 export const authReducer = authSlice.reducer;
 
-export const selectIsAuth = (state: RootState) => !!state.auth.user;
+export const selectToken = (state: RootState) => state.auth.token;
 export const selectUser = (state: RootState) => state.auth.user;

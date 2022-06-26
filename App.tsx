@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   NavigationContainer,
   NavigatorScreenParams,
@@ -24,6 +25,7 @@ export type AuthStackParams = {
 
 export type MainStackParams = {
   Home: undefined;
+  Timeline: undefined;
 };
 
 export type RootStackParams = {
@@ -32,7 +34,6 @@ export type RootStackParams = {
 };
 
 const RootStack = createNativeStackNavigator();
-
 
 export default function App() {
   return (

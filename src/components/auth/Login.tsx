@@ -40,7 +40,6 @@ export const Login: FC = () => {
   const handleLogin = async () => {
     try {
       await login(formValue).unwrap();
-      navigation.navigate("Main", { screen: "Home" });
     } catch (error) {
       Alert.alert("Error", "An error has ocurred. Please try again later.");
       console.error(error);

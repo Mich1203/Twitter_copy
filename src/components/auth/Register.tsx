@@ -2,7 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, Input } from "@rneui/themed";
 import React, { FC, useState } from "react";
-import { Alert, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { RootStackParams } from "../../../App";
 import { useRegisterMutation } from "../../services/auth";
 
