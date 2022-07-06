@@ -96,6 +96,7 @@ export const CreateTweetForm: FC<ICreateTweetFormProps> = ({
           title="Submit tweet"
           onPress={handleSubmit}
           loading={loadingAdd || loadingAttachment}
+          disabled={formValue.content.length > MAX_ALLOWED_CHARS}
         />
       </View>
     </Modal>

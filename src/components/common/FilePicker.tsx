@@ -1,5 +1,5 @@
 import { Icon, Image } from "@rneui/themed";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import {
   Alert,
   ScrollView,
@@ -11,23 +11,25 @@ import DocumentPicker, {
   DocumentPickerResponse,
 } from "react-native-document-picker";
 
-const MAX_ALLOWED_FILES = 4;
+const DEFAULT_MAX_ALLOWED_FILES = 4;
 
 export interface IFilePickerProps {
   selectedFiles: DocumentPickerResponse[];
   onSelectFiles: (files: DocumentPickerResponse[]) => void;
+  maxFiles?: number;
 }
 
 export const FilePicker: FC<IFilePickerProps> = ({
   selectedFiles,
   onSelectFiles,
+  maxFiles = DEFAULT_MAX_ALLOWED_FILES,
 }) => {
   const handlePickFile = async () => {
     try {
       const res = await DocumentPicker.pickMultiple({
         type: [DocumentPicker.types.images],
       });
-      onSelectFiles(res.slice(0, MAX_ALLOWED_FILES));
+      onSelectFiles(res.slice(0, maxFiles));
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs or menus and move on
@@ -54,7 +56,7 @@ export const FilePicker: FC<IFilePickerProps> = ({
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {selectedFiles.length < MAX_ALLOWED_FILES && (
+        {selectedFiles.length < maxFiles && (
           <TouchableHighlight onPress={handlePickFile}>
             <View style={styles.picker}>
               <Icon name="plus" color="#fff" type="font-awesome" size={36} />

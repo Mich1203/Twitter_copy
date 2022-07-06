@@ -2,9 +2,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Icon } from "@rneui/themed";
 import React, { FC, useEffect } from "react";
-import { Alert } from "react-native";
 import { RootStackParams } from "../../../App";
-import { Home } from "./Home";
+import { useAppSelector } from "../../hooks/store";
+import { selectToken } from "../../store/auth";
+import { Profile } from "./Profile";
+import { Search } from "./Search";
 import { Timeline } from "./Timeline";
 
 export type MainProps = NativeStackScreenProps<RootStackParams, "Main">;
@@ -12,14 +14,15 @@ export type MainProps = NativeStackScreenProps<RootStackParams, "Main">;
 const Tab = createBottomTabNavigator();
 
 export const Main: FC<MainProps> = ({ navigation }) => {
-  
+  const token = useAppSelector(selectToken);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
-      e.preventDefault();
+      token && e.preventDefault();
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, token]);
 
   return (
     <Tab.Navigator>
@@ -37,17 +40,17 @@ export const Main: FC<MainProps> = ({ navigation }) => {
         component={Timeline}
       />
       <Tab.Screen
-        name="Home"
+        name="Search"
         options={{
           tabBarIcon: ({ focused }) => (
             <Icon
-              name="home"
+              name="search"
               type="font-awesome"
               color={focused ? "#00a7f7" : ""}
             />
           ),
         }}
-        component={Home}
+        component={Search}
       />
       <Tab.Screen
         name="Profile"
@@ -60,7 +63,7 @@ export const Main: FC<MainProps> = ({ navigation }) => {
             />
           ),
         }}
-        component={Home}
+        component={Profile}
       />
     </Tab.Navigator>
   );

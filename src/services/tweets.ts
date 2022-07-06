@@ -2,14 +2,18 @@ import { apiSlice } from ".";
 import { ApiResponse } from "../interfaces/general";
 import {
   IAddTweetRequest,
+  IRetweet,
   ITweet,
   IUploadAttachmentRequest,
 } from "../interfaces/tweets";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getTweets: builder.query<ApiResponse<ITweet[]>, void>({
-      query: () => `tweets`,
+    getTweets: builder.query<
+      ApiResponse<{ tweets: ITweet[]; retweets: IRetweet[] }>,
+      string | undefined
+    >({
+      query: (type: string) => `tweets?type=${type ?? "all"}`,
       providesTags: ["Tweets"],
     }),
     addTweet: builder.mutation<ApiResponse<ITweet>, IAddTweetRequest>({
@@ -18,10 +22,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body,
       }),
-      // invalidatesTags: ["Tweets"],
+      invalidatesTags: ["Tweets"],
     }),
     uploadAttachment: builder.mutation<
-      ApiResponse<string[]>,
+      ApiResponse<ITweet>,
       IUploadAttachmentRequest
     >({
       query: (body) => ({
@@ -31,11 +35,39 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Tweets"],
     }),
+    deleteTweet: builder.mutation<ApiResponse<void>, string>({
+      query: (id) => ({
+        url: "tweets",
+        method: "DELETE",
+        body: {
+          _id: id,
+        },
+      }),
+      invalidatesTags: ["Tweets"],
+    }),
+    toggleLike: builder.mutation<ApiResponse<void>, string>({
+      query: (id) => ({
+        url: `tweets/toggleLike/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Tweets"],
+    }),
+    toggleRetweet: builder.mutation<ApiResponse<IRetweet | void>, string>({
+      query: (id) => ({
+        url: `tweets/retweet/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Tweets"],
+    }),
   }),
 });
 
 export const {
   useGetTweetsQuery,
+  useLazyGetTweetsQuery,
   useAddTweetMutation,
   useUploadAttachmentMutation,
+  useToggleLikeMutation,
+  useToggleRetweetMutation,
+  useDeleteTweetMutation,
 } = authApiSlice;

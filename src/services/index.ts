@@ -27,6 +27,6 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "Tweets"],
+  tagTypes: ["User", "Tweets", "Following"],
   endpoints: (builder) => ({}),
 });

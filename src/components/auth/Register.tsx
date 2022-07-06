@@ -32,10 +32,11 @@ export const Register: FC = () => {
   };
 
   const isValid = () => {
-    const { email, name, password, confirmPassword } = formValue;
+    const { email, name, username, password, confirmPassword } = formValue;
     return (
       email &&
       name &&
+      username &&
       password &&
       password.length > 6 &&
       password === confirmPassword

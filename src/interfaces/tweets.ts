@@ -9,6 +9,13 @@ export interface ITweet {
   attachments: string[];
 }
 
+export interface IRetweet {
+  _id: string;
+  user: IUser;
+  tweet: ITweet;
+  created_date: Date;
+}
+
 export interface IAddTweetRequest {
   content: string;
 }

@@ -13,6 +13,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
       query: () => "auth/profile",
       providesTags: ["User"],
     }),
+    updateProfile: builder.mutation<ApiResponse<IUser>, IUser>({
+      query: (user) => ({
+        url: "auth/profile",
+        method: "PUT",
+        body: user,
+      }),
+      invalidatesTags: ["User"],
+    }),
     login: builder.mutation<ApiResponse<IUserResponse>, ILoginRequest>({
       query: (credentials) => ({
         url: "auth/login",
@@ -37,6 +45,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 export const {
   useLazyGetProfileQuery,
   useLoginMutation,
+  useUpdateProfileMutation,
   useRegisterMutation,
   useProtectedMutation,
 } = authApiSlice;
